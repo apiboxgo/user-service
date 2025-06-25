@@ -1,0 +1,262 @@
+definitions:
+  user.RequestUserByEmailAndPasswordDto:
+    properties:
+      email:
+        example: Some user email
+        type: string
+      password:
+        example: Some user password
+        type: string
+    type: object
+  user.RequestUserDTO:
+    properties:
+      created_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+      deleted_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+      email:
+        example: Some user email
+        type: string
+      password:
+        example: Some user password
+        type: string
+      updated_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+    type: object
+  user.SuccessResponseDto:
+    properties:
+      message:
+        type: string
+    type: object
+  user.UserItemResultDto:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: Getting Users
+      parameters:
+      - collectionFormat: csv
+        description: Name
+        in: query
+        items:
+          type: string
+        name: names
+        type: array
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: cursor (las id uuid)
+        in: query
+        name: cursor
+        type: string
+      - description: lastTimestamp
+        in: query
+        name: lastTimestamp
+        type: string
+      - collectionFormat: csv
+        description: 'Filter created_at Like min-max (example: 2025-06-11T08:28:51.400404Z)'
+        in: query
+        items:
+          type: string
+        name: orders[created_at]
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.RequestUserDTO'
+            type: array
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      parameters:
+      - description: Sent data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.RequestUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.SuccessResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create user
+      tags:
+      - Users
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleting user by id
+      parameters:
+      - description: User id (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.RequestUserDTO'
+            type: array
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      description: Getting user by id
+      parameters:
+      - description: User id (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.RequestUserDTO'
+            type: array
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: Update only sent fields
+      parameters:
+      - description: User id (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.RequestUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserItemResultDto'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Patch user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update all sent fields
+      parameters:
+      - description: User id (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.RequestUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.SuccessResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Put user
+      tags:
+      - user
+  /user/get-by-email-and-password:
+    post:
+      consumes:
+      - application/json
+      description: Getting user by Email and Password
+      parameters:
+      - description: Sent data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.RequestUserByEmailAndPasswordDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.RequestUserDTO'
+            type: array
+      tags:
+      - user
+swagger: "2.0"
