@@ -1,6 +1,6 @@
 # ApiGoBoX
 
-This is a simple api skeleton by Go
+This is a simple api user service by Go
 
 Install
 
