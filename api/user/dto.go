@@ -12,7 +12,7 @@ type RequestFilterUserDto struct {
 	Limit         int               `form:"limit"`
 	Cursor        string            `form:"cursor"`
 	LastTimestamp string            `json:"lastTimestamp"`
-	Orders        map[string]string `json:"orders[]"`
+	Orders        map[string]string `json:"orders"`
 }
 
 type RequestUserDTO struct {
@@ -27,9 +27,8 @@ type RequestUserIdDTO struct {
 	ID string `uri:"id" binding:"required,uuid" example:"987fbc97-4bed-5078-9f07-9141ba07c9f3"`
 }
 
-type RequestUserByEmailAndPasswordDto struct {
-	Email    string `form:"email" binding:"required,email"  example:"Some user email"`
-	Password string `form:"password" binding:"required"  example:"Some user password"`
+type RequestUserByEmailDto struct {
+	Email string `form:"email" binding:"required,email"  example:"Some user email"`
 }
 
 // ============================== Response DTO =========================================================================
@@ -40,6 +39,15 @@ type ErrorResponseDto struct {
 
 type SuccessResponseDto struct {
 	Message string `json:"message"`
+}
+
+type UserItemFullResultDto struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	DeletedAt time.Time `json:"deleted_at"`
 }
 
 type UserItemResultDto struct {

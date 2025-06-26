@@ -126,7 +126,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/get-by-email-and-password": {
+        "/user/get-by-email": {
             "post": {
                 "description": "Getting user by Email and Password",
                 "consumes": [
@@ -145,7 +145,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.RequestUserByEmailAndPasswordDto"
+                            "$ref": "#/definitions/user.RequestUserByEmailDto"
                         }
                     }
                 ],
@@ -336,21 +336,24 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "user.RequestUserByEmailAndPasswordDto": {
+        "user.RequestUserByEmailDto": {
             "type": "object",
+            "required": [
+                "email"
+            ],
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "Some user email"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "Some user password"
                 }
             }
         },
         "user.RequestUserDTO": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "created_at": {
                     "type": "string",

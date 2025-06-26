@@ -55,7 +55,6 @@ func TestGetUsersListWithFilterEmail(t *testing.T) {
 	clearDbTableUser(t)
 
 	_, err := createUsers(14)
-
 	u, err := url.Parse(UriUser)
 	if err != nil {
 		panic(err)
@@ -109,7 +108,7 @@ func TestGetUserById_NotFoundResult(t *testing.T) {
 	clearDbTableUser(t)
 	fakeId := "987fbc97-4bed-5078-9f07-9141ba07c9f3"
 	var result ErrorResponseDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, fakeId), "GET", nil, &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, fakeId), "GET", nil, &result)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
@@ -121,7 +120,7 @@ func TestGetUserById_WrongIdFormat(t *testing.T) {
 	clearDbTableUser(t)
 	fakeId := "987fbc97"
 	var result ErrorResponseDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, fakeId), "GET", nil, &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, fakeId), "GET", nil, &result)
 
 	assert.Equal(t, http.StatusUnprocessableEntity, w.Code)
 
@@ -139,10 +138,34 @@ func TestGetUserById_SuccessfulResult(t *testing.T) {
 	}
 
 	var result UserItemResultDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, User.ID.String()), "GET", nil, &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, User.ID.String()), "GET", nil, &result)
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, User.ID, result.ID)
+}
 
+func TestGetUserByEmail_SuccessfulResult(t *testing.T) {
+	clearDbTableUser(t)
+	User := User{
+		Email:    "test_user_1@user.com",
+		Password: "123123",
+	}
+	if err := db.Create(&User).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	post := map[string]string{
+		"email": "test_user_1@user.com",
+	}
+
+	jsonData, err := json.Marshal(post)
+	if err != nil {
+		panic(err)
+	}
+
+	var result UserItemResultDto
+	w := sendRequest(t, UriUser+UriUserGetByEmail, "POST", bytes.NewBuffer(jsonData), &result)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, User.ID, result.ID)
 }
 
 func TestCreateUser_SuccessfulResult(t *testing.T) {
@@ -179,7 +202,7 @@ func TestPutUserItem_SuccessfulResult(t *testing.T) {
 		panic(err)
 	}
 	var result SuccessResponseDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, User.ID.String()), "PUT", bytes.NewBuffer(jsonData), &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, User.ID.String()), "PUT", bytes.NewBuffer(jsonData), &result)
 	assert.Equal(t, http.StatusOK, w.Code)
 	updatedUser, err := GetOneById(RequestUserIdDTO{
 		ID: User.ID.String(),
@@ -212,7 +235,7 @@ func TestPatchUserItem_SuccessfulResult(t *testing.T) {
 	}
 
 	var result SuccessResponseDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, User.ID.String()), "PATCH", bytes.NewBuffer(jsonData), &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, User.ID.String()), "PATCH", bytes.NewBuffer(jsonData), &result)
 	assert.Equal(t, http.StatusOK, w.Code)
 	updatedUser, err := GetOneById(RequestUserIdDTO{
 		ID: User.ID.String(),
@@ -235,7 +258,7 @@ func TestDeleteUserItem_SuccessfulResult(t *testing.T) {
 	}
 
 	var result SuccessResponseDto
-	w := sendRequest(t, fmt.Sprintf(UriUserGetByIdS, User.ID.String()), "DELETE", nil, &result)
+	w := sendRequest(t, fmt.Sprintf(UriUser+UriUserGetByIdS, User.ID.String()), "DELETE", nil, &result)
 	assert.Equal(t, http.StatusOK, w.Code)
 	deletedUser, err := GetOneById(RequestUserIdDTO{
 		ID: User.ID.String(),

@@ -22,7 +22,7 @@ runs:
 .PHONY: runs
 
 stop:
-	@echo "Остановка сервера"
+	@echo "Stop service"
 	@kill -SIGINT $(shell lsof -t -i:$(SERVER_PORT))
 .PHONY: stop
 fmt:

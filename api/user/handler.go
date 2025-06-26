@@ -22,26 +22,26 @@ import (
 //	@license.name	MIT
 //	@license.url	https://opensource.org/license/mit
 
-// GetUserByEmailAndPassword @Summary Getting user by Email and Password
+// GetUserByEmail @Summary Getting user by Email and Password
 // @Description Getting user by Email and Password
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param        request body RequestUserByEmailAndPasswordDto true "Sent data"
+// @Param        request body RequestUserByEmailDto true "Sent data"
 // @Success 200 {array} RequestUserDTO
-// @Router /user/get-by-email-and-password [post]
-func GetUserByEmailAndPassword(c *gin.Context) {
+// @Router /user/get-by-email [post]
+func GetUserByEmail(c *gin.Context) {
 
-	var requestUserByEmailAndPasswordDto RequestUserByEmailAndPasswordDto
+	var requestUserByEmailDto RequestUserByEmailDto
 
-	if err := c.ShouldBindJSON(&requestUserByEmailAndPasswordDto); err != nil {
-		utils.Dump(err)
+	if err := c.ShouldBindJSON(&requestUserByEmailDto); err != nil {
 		utils.LogError(dictionary.ErrorParsingRequestBody, err)
 		c.JSON(http.StatusUnprocessableEntity, &ErrorResponseDto{
 			Message: err.Error(),
 		})
 	}
-	resultDto, err := GetOneByEmailAndPassword(requestUserByEmailAndPasswordDto.Email, requestUserByEmailAndPasswordDto.Password)
+
+	resultDto, err := GetOneByEmail(requestUserByEmailDto.Email)
 
 	if err != nil {
 		utils.LogError(dictionary.SomethingWrong, err)
@@ -52,7 +52,7 @@ func GetUserByEmailAndPassword(c *gin.Context) {
 	}
 
 	if resultDto == nil || resultDto.ID == uuid.Nil {
-		message := fmt.Sprintf(dictionary.UserNotFound, requestUserByEmailAndPasswordDto.Email)
+		message := fmt.Sprintf(dictionary.UserNotFound, requestUserByEmailDto.Email)
 		c.JSON(http.StatusNotFound, &ErrorResponseDto{
 			Message: message,
 		})

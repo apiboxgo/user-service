@@ -5,16 +5,17 @@ import (
 )
 
 const UriUser = "/user"
-const UriUserGetByEmailAndPassword = UriUser + "/get-by-email-and-password"
-const UriUserGetById = UriUser + "/:id"
-const UriUserGetByIdS = UriUser + "/%s"
+const UriUserGetByEmail = "/get-by-email"
+const UriUserGetById = "/:id"
+const UriUserGetByIdS = "/%s"
 
 func InitUserRoutes(route *gin.Engine) {
+	group := route.Group(UriUser)
 	route.GET(UriUser, GetUsersListByFilter)
-	route.GET(UriUserGetById, GetUserById)
+	group.GET(UriUserGetById, GetUserById)
 	route.POST(UriUser, CreateUser)
-	route.POST(UriUserGetByEmailAndPassword, GetUserByEmailAndPassword)
-	route.PUT(UriUserGetById, PutUserItemById)
-	route.PATCH(UriUserGetById, PatchUserById)
-	route.DELETE(UriUserGetById, DeleteUserById)
+	group.POST(UriUserGetByEmail, GetUserByEmail)
+	group.PUT(UriUserGetById, PutUserItemById)
+	group.PATCH(UriUserGetById, PatchUserById)
+	group.DELETE(UriUserGetById, DeleteUserById)
 }

@@ -1,10 +1,8 @@
 package user
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"strings"
 	"user-service/api_init"
 )
@@ -67,31 +65,20 @@ func GetItems(filterDto *RequestFilterUserDto) (*ResultListDTO, error) {
 	return &resultDto, nil
 }
 
-func GetOneByEmailAndPassword(email string, password string) (*UserItemResultDto, error) {
+func GetOneByEmail(email string) (*UserItemFullResultDto, error) {
 
-	if email == "" || password == "" {
+	if email == "" {
 		return nil, nil
 	}
 
-	result := User{}
+	var result UserItemFullResultDto
 	err := api_init.GetDbh().Raw("SELECT * FROM users WHERE email = $1 LIMIT 1", email).Scan(&result).Error
 
-	if err == nil || err == sql.ErrNoRows {
-		return nil, err
-	}
-
-	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(password))
 	if err != nil {
 		return nil, err
 	}
 
-	return &UserItemResultDto{
-		ID:        result.ID,
-		Email:     result.Email,
-		CreatedAt: result.CreatedAt,
-		UpdatedAt: result.UpdatedAt,
-		DeletedAt: result.DeletedAt,
-	}, nil
+	return &result, nil
 }
 
 func GetOneById(requestUserIdDTO RequestUserIdDTO) (*UserItemResultDto, error) {

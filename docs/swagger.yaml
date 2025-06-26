@@ -1,12 +1,11 @@
 definitions:
-  user.RequestUserByEmailAndPasswordDto:
+  user.RequestUserByEmailDto:
     properties:
       email:
         example: Some user email
         type: string
-      password:
-        example: Some user password
-        type: string
+    required:
+    - email
     type: object
   user.RequestUserDTO:
     properties:
@@ -25,6 +24,9 @@ definitions:
       updated_at:
         example: "2022-01-01T00:00:00Z"
         type: string
+    required:
+    - email
+    - password
     type: object
   user.SuccessResponseDto:
     properties:
@@ -236,7 +238,7 @@ paths:
       summary: Put user
       tags:
       - user
-  /user/get-by-email-and-password:
+  /user/get-by-email:
     post:
       consumes:
       - application/json
@@ -247,7 +249,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/user.RequestUserByEmailAndPasswordDto'
+          $ref: '#/definitions/user.RequestUserByEmailDto'
       produces:
       - application/json
       responses:
