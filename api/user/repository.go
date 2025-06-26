@@ -2,9 +2,9 @@ package user
 
 import (
 	"fmt"
+	"github.com/apiboxgo/library-utils/api_init"
 	"github.com/google/uuid"
 	"strings"
-	"user-service/api_init"
 )
 
 func GetItems(filterDto *RequestFilterUserDto) (*ResultListDTO, error) {

@@ -2,15 +2,15 @@ package user
 
 import (
 	"fmt"
+	"github.com/apiboxgo/library-utils/dictionary"
+	"github.com/apiboxgo/library-utils/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strings"
 	"time"
-	"user-service/dictionary"
 	_ "user-service/docs"
-	"user-service/utils"
 )
 
 // ================================== Get user by Email and Password ===================================================

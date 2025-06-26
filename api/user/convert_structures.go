@@ -1,12 +1,12 @@
 package user
 
 import (
+	"github.com/apiboxgo/library-utils/dictionary"
+	"github.com/apiboxgo/library-utils/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
 	"time"
-	"user-service/dictionary"
-	"user-service/utils"
 )
 
 func convertRequestUserDTOToUser(c *gin.Context, requestUserIdDTO RequestUserIdDTO, requestUserDTO RequestUserDTO, user *User) {

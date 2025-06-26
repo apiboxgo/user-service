@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/apiboxgo/library-utils/api_init"
+	"github.com/apiboxgo/library-utils/dictionary"
+	"github.com/apiboxgo/library-utils/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -15,9 +18,6 @@ import (
 	"strconv"
 	"testing"
 	"time"
-	"user-service/api_init"
-	"user-service/dictionary"
-	"user-service/utils"
 )
 
 var db *gorm.DB
